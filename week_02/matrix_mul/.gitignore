@@ -1,8 +1,0 @@
-# manage this using a white-list approach
-*
-
-# list tracked files:
-!.gitignore
-!Makefile
-!*.c
-!*.cl

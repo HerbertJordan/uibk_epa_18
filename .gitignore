@@ -1,0 +1,4 @@
+# ignore everything ending with 
+*_seq
+*_omp
+*_ocl
