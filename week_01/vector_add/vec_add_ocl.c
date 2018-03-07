@@ -109,6 +109,22 @@ int main(int argc, char** argv) {
         // 8) build program (compile + link for device architecture)
         ret = clBuildProgram(program, 1, &device_id, NULL, NULL, NULL);
         
+        // report kernel build errors
+        if (ret != CL_SUCCESS) {
+
+            // create a temporary buffer for the message
+            size_t size = 1<<20;    // 1MB
+            char* msg = malloc(size);
+            size_t msg_size;
+
+            // retrieve the error message
+            clGetProgramBuildInfo(program, device_id, CL_PROGRAM_BUILD_LOG, size, msg, &msg_size);
+
+            // print the error message
+            printf("Build Error:\n%s",msg);
+            exit(1);
+        }
+
         // 9) create OpenCL kernel
         kernel = clCreateKernel(program, "vec_add", &ret);
 
