@@ -14,7 +14,7 @@ mat_mul_seq: $(COMMON_DEPENDENCIES) mat_mul_seq.c
 mat_mul_omp: $(COMMON_DEPENDENCIES) mat_mul_omp.c
 	@$(CC) $(CC_FLAGS) mat_mul_omp.c -o mat_mul_omp -fopenmp
 
-mat_mul_ocl: $(COMMON_DEPENDENCIES) mat_mul_ocl.c
+mat_mul_ocl: $(COMMON_DEPENDENCIES) mat_mul_ocl.c cl_utils.h
 	@$(CC) $(CC_FLAGS) mat_mul_ocl.c -o mat_mul_ocl -lOpenCL
 
 .PHONEY: clean
