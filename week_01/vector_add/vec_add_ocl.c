@@ -86,8 +86,16 @@ int main(int argc, char** argv) {
 
         // 5) create memory buffers on device
         size_t vec_size = sizeof(value_t) * N;
-        cl_mem devVecA = clCreateBuffer(context, CL_MEM_READ_ONLY | CL_MEM_HOST_WRITE_ONLY, vec_size, NULL, &ret);
-        cl_mem devVecB = clCreateBuffer(context, CL_MEM_READ_ONLY | CL_MEM_HOST_WRITE_ONLY, vec_size, NULL, &ret);
+        cl_mem devVecA = clCreateBuffer(context, CL_MEM_READ_ONLY
+          #if ! __APPLE__
+          | CL_MEM_HOST_WRITE_ONLY
+          #endif
+          , vec_size, NULL, &ret);
+        cl_mem devVecB = clCreateBuffer(context, CL_MEM_READ_ONLY
+          #if ! __APPLE__
+          | CL_MEM_HOST_WRITE_ONLY
+          #endif
+          , vec_size, NULL, &ret);
         cl_mem devVecC = clCreateBuffer(context, CL_MEM_WRITE_ONLY | CL_MEM_HOST_READ_ONLY, vec_size, NULL, &ret);
 
         // 6) transfer input data from host to device (synchroniously)
