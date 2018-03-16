@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../../shared/utils.h"
+#include <utils.h>
 #include "cl_utils.h"
 
 typedef float value_t;

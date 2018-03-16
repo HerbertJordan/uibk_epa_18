@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../../shared/opencl.h"
-#include "../../shared/utils.h"
+#include <opencl.h>
+#include <utils.h>
 
 typedef float value_t;
 

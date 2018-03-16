@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../shared/opencl.h"
+#include <opencl.h>
 #include <assert.h>
 #include <stdarg.h>
 #ifndef _WIN32
