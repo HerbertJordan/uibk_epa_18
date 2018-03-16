@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "utils.h"
+#include "../../shared/utils.h"
 
 typedef float value_t;
 
@@ -26,13 +26,13 @@ int main(int argc, char** argv) {
     }
     printf("Computing matrix-matrix product with N=%d\n", N);
 
-    
+
     // ---------- setup ----------
 
     // create two input matrixes (on heap!)
     Matrix A = createMatrix(N,N);
     Matrix B = createMatrix(N,N);
-    
+
     // fill matrixes
     for(int i = 0; i<N; i++) {
         for(int j = 0; j<N; j++) {
@@ -40,9 +40,9 @@ int main(int argc, char** argv) {
             B[i*N+j] = (i==j) ? 1 : 0;  // identity
         }
     }
-    
+
     // ---------- compute ----------
-    
+
     Matrix C = createMatrix(N,N);
 
     timestamp begin = now();
@@ -51,7 +51,7 @@ int main(int argc, char** argv) {
     // Thus, i and j can be parallelized.
     // For thread-level parallelism (OpenMP) outer-most parallelism is more
     // beneficial to avoid synchronization overhead.
-    
+
     #pragma omp parallel for
     for(long long i = 0; i<N; i++) {
         for(long long j = 0; j<N; j++) {
@@ -62,13 +62,13 @@ int main(int argc, char** argv) {
             C[i*N+j] = sum;
         }
     }
-    
-    
+
+
     timestamp end = now();
     printf("Total time: %.3fms\n", (end-begin)*1000);
 
-    // ---------- check ----------    
-    
+    // ---------- check ----------
+
     bool success = true;
     for(long long i = 0; i<N; i++) {
         for(long long j = 0; j<N; j++) {
@@ -77,15 +77,15 @@ int main(int argc, char** argv) {
             break;
         }
     }
-    
+
     printf("Verification: %s\n", (success)?"OK":"FAILED");
-    
+
     // ---------- cleanup ----------
-    
+
     releaseMatrix(A);
     releaseMatrix(B);
     releaseMatrix(C);
-    
+
     // done
     return (success) ? EXIT_SUCCESS : EXIT_FAILURE;
 }

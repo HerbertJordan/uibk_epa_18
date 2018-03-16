@@ -2,8 +2,7 @@
 #include <stdlib.h>
 
 #include "../../shared/opencl.h"
-
-#include "utils.h"
+#include "../../shared/utils.h"
 
 typedef float value_t;
 

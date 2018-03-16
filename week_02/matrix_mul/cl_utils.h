@@ -1,7 +1,6 @@
 #pragma once
 
-#define CL_USE_DEPRECATED_OPENCL_1_2_APIS
-#include <CL/cl.h>
+#include "../../shared/opencl.h"
 #include <assert.h>
 #include <stdarg.h>
 #ifndef _WIN32
@@ -32,7 +31,7 @@ if(__err != CL_SUCCESS) { \
  cl_device_id cluInitDevice(size_t num, cl_context *out_context, cl_command_queue *out_queue);
 
 // get string with basic information about the ocl device "device" with id "id"
-const char* cluGetDeviceDescription(const cl_device_id device, unsigned id); 
+const char* cluGetDeviceDescription(const cl_device_id device, unsigned id);
 
 // loads and builds program from "fn" on the supplied context and device, with the options string "options"
 // aborts and reports the build log in case of compiler errors
@@ -51,13 +50,13 @@ const char* cluDeviceTypeString(cl_device_type type);
 
 // ------------------------------------------------------------------------------------------------ implementations
 
- cl_device_id cluInitDevice(size_t num, cl_context *out_context, cl_command_queue *out_queue) {	
+ cl_device_id cluInitDevice(size_t num, cl_context *out_context, cl_command_queue *out_queue) {
 	// get platform ids
 	cl_uint ret_num_platforms;
 	CLU_ERRCHECK(clGetPlatformIDs(0, NULL, &ret_num_platforms), "Failed to query number of ocl platforms");
 	cl_platform_id *ret_platforms = (cl_platform_id*)alloca(sizeof(cl_platform_id)*ret_num_platforms);
 	CLU_ERRCHECK(clGetPlatformIDs(ret_num_platforms, ret_platforms, NULL), "Failed to retrieve ocl platforms");
-	
+
 	// get device id of desired device
 	cl_device_id device_id = NULL;
 	for(cl_uint i=0; i<ret_num_platforms; ++i) {
@@ -71,13 +70,13 @@ const char* cluDeviceTypeString(cl_device_type type);
 		}
 		num -= ret_num_devices;
 	}
-	
+
 	// create opencl context if requested
 	if(out_context != NULL) {
 		cl_int err;
 		*out_context = clCreateContext(NULL, 1, &device_id, NULL, NULL, &err);
 		CLU_ERRCHECK(err, "Failed to create ocl context");
-		
+
 		// create command queue if requested
 		if(out_queue != NULL) {
 			*out_queue = clCreateCommandQueue(*out_context, device_id, 0, &err);
@@ -110,7 +109,7 @@ const char* cluDeviceTypeString(cl_device_type type);
 	CLU_ERRCHECK(err, "Failed to create program from source file: %s", fn);
 
 	// build kernel program
-	err = clBuildProgram(program, 1, &device_id, options, NULL, NULL);	
+	err = clBuildProgram(program, 1, &device_id, options, NULL, NULL);
 	if(err != CL_SUCCESS) {
 		fprintf(stderr, "clBuildProgram() failed for source file: %s\n", fn);
 		fprintf(stderr, "Error type: %s\n", cluErrorString(err));
@@ -118,7 +117,7 @@ const char* cluDeviceTypeString(cl_device_type type);
 		fprintf(stderr, "Build log:\n%s\n", source_str);
 		exit(-1);
 	}
-	
+
 	free(source_str);
 	return program;
 }
@@ -133,7 +132,7 @@ const char* cluDeviceTypeString(cl_device_type type);
 	for(cl_uint i=0; i<num_args; ++i) {
 		arg_size = va_arg(arg_list, size_t);
 		arg_val = va_arg(arg_list, void *);
-		CLU_ERRCHECK(clSetKernelArg(kernel, i, arg_size, arg_val), "Error setting kernel argument %u", i);    
+		CLU_ERRCHECK(clSetKernelArg(kernel, i, arg_size, arg_val), "Error setting kernel argument %u", i);
 	}
   	va_end(arg_list);
 }
