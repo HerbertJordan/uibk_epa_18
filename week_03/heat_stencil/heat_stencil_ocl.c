@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "utils.h"
+#include "../../shared/utils.h"
 
 typedef float value_t;
 
@@ -29,12 +29,12 @@ int main(int argc, char** argv) {
     int T = N*100;
     printf("Computing heat-distribution for room size N=%d for T=%d timesteps\n", N, T);
 
-    
+
     // ---------- setup ----------
 
     // create a buffer for storing temperature fields
     Matrix A = createMatrix(N,N);
-    
+
     // set up initial conditions in A
     for(int i = 0; i<N; i++) {
         for(int j = 0; j<N; j++) {
@@ -49,23 +49,23 @@ int main(int argc, char** argv) {
 
     printf("Initial:\n");
     printTemperature(A,N,N);
-    
+
     // ---------- compute ----------
 
-    // create a second buffer for the computation    
+    // create a second buffer for the computation
     Matrix B = createMatrix(N,N);
 
     timestamp begin = now();
 
     // -- BEGIN ASSIGNMENT --
-    
+
     // TODO: parallelize the following computation using OpenCL
-    
+
 
     // for each time step ..
     for(int t=0; t<T; t++) {
 
-        // .. we propagate the temperature 
+        // .. we propagate the temperature
         for(long long i = 0; i<N; i++) {
             for(long long j = 0; j<N; j++) {
 
@@ -103,7 +103,7 @@ int main(int argc, char** argv) {
 
 
     // -- END ASSIGNMENT --
-    
+
 
     timestamp end = now();
     printf("Total time: %.3fms\n", (end-begin)*1000);
@@ -111,11 +111,11 @@ int main(int argc, char** argv) {
     releaseMatrix(B);
 
 
-    // ---------- check ----------    
+    // ---------- check ----------
 
     printf("Final:\n");
     printTemperature(A,N,N);
-    
+
     bool success = true;
     for(long long i = 0; i<N; i++) {
         for(long long j = 0; j<N; j++) {
@@ -125,13 +125,13 @@ int main(int argc, char** argv) {
             break;
         }
     }
-    
+
     printf("Verification: %s\n", (success)?"OK":"FAILED");
-    
+
     // ---------- cleanup ----------
-    
+
     releaseMatrix(A);
-    
+
     // done
     return (success) ? EXIT_SUCCESS : EXIT_FAILURE;
 }
