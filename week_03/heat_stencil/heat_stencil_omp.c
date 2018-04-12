@@ -36,6 +36,7 @@ int main(int argc, char** argv) {
     Matrix A = createMatrix(N,N);
     
     // set up initial conditions in A
+    #pragma omp parallel
     for(int i = 0; i<N; i++) {
         for(int j = 0; j<N; j++) {
             A[i*N+j] = 273;             // temperature is 0°C everywhere (273K)
@@ -66,6 +67,7 @@ int main(int argc, char** argv) {
     for(int t=0; t<T; t++) {
 
         // .. we propagate the temperature 
+        #pragma omp parallel
         for(long long i = 0; i<N; i++) {
             for(long long j = 0; j<N; j++) {
 
