@@ -28,6 +28,6 @@ __kernel void stencil(
     value_t td = ( i != N-1 ) ? A[(i+1)*N+j] : tc;
 
     // update temperature at current point
-    B[i*N+j] = tc + 0.2 * (tl + tr + tu + td + (-4*tc));
+    B[i*N+j] = tc + 0.2f * (tl + tr + tu + td + (-4.0f*tc));
 
 }
