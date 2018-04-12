@@ -9,8 +9,8 @@ __kernel void stencil(
     int N
 ) {
     // obtain position of this 'thread'
-    size_t i = get_global_id(0);
-    size_t j = get_global_id(1);
+    size_t i = get_global_id(1);
+    size_t j = get_global_id(0);
 
     // center stays constant (the heat is still on)
     if (i == source_x && j == source_y) {
