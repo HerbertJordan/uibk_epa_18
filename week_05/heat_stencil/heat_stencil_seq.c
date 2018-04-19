@@ -36,7 +36,6 @@ int main(int argc, char** argv) {
     Matrix A = createMatrix(N,N);
     
     // set up initial conditions in A
-    #pragma omp parallel for
     for(int i = 0; i<N; i++) {
         for(int j = 0; j<N; j++) {
             A[i*N+j] = 273;             // temperature is 0°C everywhere (273K)
@@ -57,17 +56,10 @@ int main(int argc, char** argv) {
     Matrix B = createMatrix(N,N);
 
     timestamp begin = now();
-
-    // -- BEGIN ASSIGNMENT --
-    
-    // TODO: parallelize the following computation using OpenMP
-    
-
     // for each time step ..
     for(int t=0; t<T; t++) {
 
         // .. we propagate the temperature 
-        #pragma omp parallel for
         for(long long i = 0; i<N; i++) {
             for(long long j = 0; j<N; j++) {
 
@@ -102,11 +94,6 @@ int main(int argc, char** argv) {
             printTemperature(A,N,N);
         }
     }
-
-
-    // -- END ASSIGNMENT --
-    
-
     timestamp end = now();
     printf("Total time: %.3fms\n", (end-begin)*1000);
 
