@@ -77,9 +77,6 @@ int main(int argc, char** argv) {
     CLU_ERRCHECK(err, "Failed to write matrix A to device");
 
 
-    err = clEnqueueWriteBuffer(command_queue, devMatB, CL_TRUE, 0, N * N * sizeof(value_t), A, 0, NULL, NULL);
-    CLU_ERRCHECK(err, "Failed to write matrix A to device");
-
     // Part 4: create kernel from source
     cl_program program = cluBuildProgramFromFile(context, device_id, "heat_stencil.cl", NULL);
     cl_kernel kernel = clCreateKernel(program, "stencil", &err);
