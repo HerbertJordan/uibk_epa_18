@@ -10,7 +10,7 @@ int main(int argc, char** argv) {
 
     // parse input parameters
     if(argc != 3) {
-      printf("Usage: auto_levels [inputfile] [outputfile]\nExample: %s input_file output_file\n", argv[0]);
+      printf("Usage: auto_levels [inputfile] [outputfile]\nExample: %s test.png test_out.png\n", argv[0]);
       return EXIT_FAILURE;
     }
 
