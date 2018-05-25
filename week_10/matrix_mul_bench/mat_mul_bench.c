@@ -160,6 +160,9 @@ int main(int argc, char** argv) {
             clGetEventProfilingInfo(event, CL_PROFILING_COMMAND_END, sizeof(cl_ulong), &end, NULL);
             duration = end - start;
    
+            // release event
+            CLU_ERRCHECK(clReleaseEvent(event), "Failed to release event");
+
             // copy results back to host
             err = clEnqueueReadBuffer(env.queue, devMatC, CL_TRUE, 0, N * N * sizeof(value_t), C, 0, NULL, NULL);
             CLU_ERRCHECK(err, "Failed reading back result");
